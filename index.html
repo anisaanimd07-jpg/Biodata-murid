@@ -115,11 +115,11 @@ header p { margin: 0; color: var(--teks-redup); }
 <div class="wadah">
     <header>
         <h1>Teknik Jaringan Komputer</h1>
-        <p>Cari siswa berdasarkan role.</p>
+        <p>Cari role.</p>
     </header>
     <div class="kontrol">
-        <input id="cari" type="search" placeholder="Cari nama atau NIS" aria-label="Cari nama atau NIS">
-        <select id="filterKelas" aria-label="Filter kelas">
+        <input id="cari" type="search" placeholder="Filter role" aria-label="Filter role">
+        <select id="filterRole" aria-label="Filter role">
             <option value="">Semua kelas</option>
         </select>
     </div>
@@ -138,7 +138,7 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const TAMPILKAN = {
     jenisKelamin: true,
     tanggalLahir: true,
-    alamat: false
+    alamat: true,
 };
 
 // LANGKAH 2: HUBUNGKAN KE SUPABASE
