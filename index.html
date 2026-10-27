@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Teknik Jaringan Komputer</title>
+<title>Teknik Jaringan Komputer - Management Siswa</title>
 <!-- Font Google -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +17,8 @@
     --teks-redup: #5b667a;
     --garis: #d6dde8;
     --aksen: #0000FF;
+    --bahaya: #d93838;
+    --sukses: #10b981;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +29,8 @@
         --teks-redup: #98a4ba;
         --garis: #2a3650;
         --aksen: #6c9bff;
+        --bahaya: #ff8b80;
+        --sukses: #34d399;
     }
 }
 
@@ -40,8 +44,36 @@ body {
 }
 
 .wadah { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
 header h1 { margin: 0 0 4px; font-size: 1.75rem; font-weight: 800; }
 header p { margin: 0; color: var(--teks-redup); }
+
+/* Tombol Utilitas */
+.btn {
+    font: inherit;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn:hover { opacity: 0.9; }
+.btn-primary { background: var(--aksen); color: #fff; }
+.btn-edit { background: #f59e0b; color: #fff; padding: 4px 10px; font-size: 0.8rem; }
+.btn-hapus { background: var(--bahaya); color: #fff; padding: 4px 10px; font-size: 0.8rem; }
+.btn-batal { background: var(--garis); color: var(--teks); }
 
 /* Kolom pencarian dan filter */
 .kontrol { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0 8px; }
@@ -64,7 +96,7 @@ header p { margin: 0; color: var(--teks-redup); }
 /* Susunan kartu */
 .daftar {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 16px;
 }
 
@@ -74,9 +106,11 @@ header p { margin: 0; color: var(--teks-redup); }
     border: 1px solid var(--garis);
     border-radius: 14px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 .pita { height: 56px; background: hsl(var(--hue) 65% 45%); }
-.isi { padding: 0 16px 16px; text-align: center; }
+.isi { padding: 0 16px 16px; text-align: center; flex: 1; display: flex; flex-direction: column; }
 .foto {
     width: 76px; height: 76px;
     margin: -38px auto 8px;
@@ -91,13 +125,55 @@ header p { margin: 0; color: var(--teks-redup); }
 .foto img { width: 100%; height: 100%; object-fit: cover; }
 .nama { margin: 0; font-size: 1.05rem; font-weight: 800; }
 .nis { margin: 0 0 12px; color: var(--teks-redup); font-size: 0.85rem; }
-.rincian { margin: 0; text-align: left; font-size: 0.9rem; }
+.rincian { margin: 0 0 16px; text-align: left; font-size: 0.9rem; flex: 1; }
 .rincian div {
     display: flex; justify-content: space-between; gap: 12px;
     padding: 6px 0; border-top: 1px solid var(--garis);
 }
 .rincian dt { color: var(--teks-redup); }
 .rincian dd { margin: 0; font-weight: 600; text-align: right; }
+
+.aksi-kartu {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid var(--garis);
+}
+
+/* Modal Popup */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+}
+.modal-overlay.aktif { display: flex; }
+.modal {
+    background: var(--kartu);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 500px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.modal h2 { margin-top: 0; font-size: 1.3rem; }
+.form-grup { margin-bottom: 12px; }
+.form-grup label { display: block; font-size: 0.85rem; margin-bottom: 4px; color: var(--teks-redup); }
+.form-grup input, .form-grup select, .form-grup textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--teks);
+    font: inherit;
+}
+.modal-aksi { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
 
 /* Pesan status */
 .pesan {
@@ -106,19 +182,22 @@ header p { margin: 0; color: var(--teks-redup); }
     padding: 40px 16px;
     color: var(--teks-redup);
 }
-.pesan.galat { color: #d93838; }
-@media (prefers-color-scheme: dark) { .pesan.galat { color: #ff8b80; } }
+.pesan.galat { color: var(--bahaya); }
 </style>
 </head>
 <body>
 
 <div class="wadah">
     <header>
-        <h1>Teknik Jaringan Komputer</h1>
-        <p>Cari role.</p>
+        <div>
+            <h1>Teknik Jaringan Komputer</h1>
+            <p>Sistem Data Siswa</p>
+        </div>
+        <button class="btn btn-primary" onclick="bukaModalTambah()">+ Tambah Siswa</button>
     </header>
+
     <div class="kontrol">
-        <input id="cari" type="search" placeholder="Filter kelas" aria-label="Filter kelas">
+        <input id="cari" type="search" placeholder="Cari NIS atau Nama..." aria-label="Cari siswa">
         <select id="filterKelas" aria-label="Filter kelas">
             <option value="">Semua kelas</option>
         </select>
@@ -127,11 +206,59 @@ header p { margin: 0; color: var(--teks-redup); }
     <main id="daftar" class="daftar"></main>
 </div>
 
+<!-- Modal Form Tambah / Edit -->
+<div id="modalForm" class="modal-overlay">
+    <div class="modal">
+        <h2 id="modalJudul">Tambah Siswa</h2>
+        <form id="formSiswa">
+            <!-- Hidden field untuk mode edit -->
+            <input type="hidden" id="editNisLama">
+            
+            <div class="form-grup">
+                <label for="inputNis">NIS</label>
+                <input type="text" id="inputNis" required>
+            </div>
+            <div class="form-grup">
+                <label for="inputNama">Nama Lengkap</label>
+                <input type="text" id="inputNama" required>
+            </div>
+            <div class="form-grup">
+                <label for="inputKelas">Kelas</label>
+                <input type="text" id="inputKelas" placeholder="contoh: XII TJKT 1" required>
+            </div>
+            <div class="form-grup">
+                <label for="inputGender">Jenis Kelamin</label>
+                <select id="inputGender">
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                </select>
+            </div>
+            <div class="form-grup">
+                <label for="inputTgl">Tanggal Lahir</label>
+                <input type="date" id="inputTgl">
+            </div>
+            <div class="form-grup">
+                <label for="inputAlamat">Alamat</label>
+                <textarea id="inputAlamat" rows="2"></textarea>
+            </div>
+            <div class="form-grup">
+                <label for="inputFoto">URL Foto (Opsional)</label>
+                <input type="url" id="inputFoto" placeholder="https://...">
+            </div>
+
+            <div class="modal-aksi">
+                <button type="button" class="btn btn-batal" onclick="tutupModal()">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Library Supabase dari CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 
 <script>
-// LANGKAH 1: PENGATURAN
+// LANGKAH 1: PENGATURAN SUPABASE
 const SUPABASE_URL = "https://kohnifhfceykgpqzmxrk.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtvaG5pZmhmY2V5a2dwcXpteHJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE4ODY0NzEsImV4cCI6MjEwNzQ2MjQ3MX0.kWx45MuvjuQUzW-cBKuzZca2AlbIYAwbHCd_WmGSvTU";
 
@@ -148,10 +275,12 @@ const elDaftar = document.getElementById("daftar");
 const elJumlah = document.getElementById("jumlah");
 const elCari = document.getElementById("cari");
 const elKelas = document.getElementById("filterKelas");
+const modalForm = document.getElementById("modalForm");
+const formSiswa = document.getElementById("formSiswa");
 
 let semuaSiswa = [];
 
-// LANGKAH 3: AMBIL DATA
+// LANGKAH 3: READ (AMBIL DATA)
 async function muatData() {
     tampilkanPesan("Memuat data siswa...");
     
@@ -179,8 +308,8 @@ function tampilkanSiswa() {
     const hasil = semuaSiswa.filter((s) => {
         const cocokKelas = !kelasDipilih || s.kelas === kelasDipilih;
         const cocokCari = !kataKunci || 
-                          s.nama.toLowerCase().includes(kataKunci) || 
-                          s.nis.toLowerCase().includes(kataKunci);
+                          (s.nama && s.nama.toLowerCase().includes(kataKunci)) || 
+                          (s.nis && s.nis.toLowerCase().includes(kataKunci));
         return cocokKelas && cocokCari;
     });
 
@@ -188,7 +317,7 @@ function tampilkanSiswa() {
     elDaftar.replaceChildren();
 
     if (hasil.length === 0) {
-        tampilkanPesan(semuaSiswa.length === 0 ? "Belum ada data siswa. Tambahkan data lewat Table Editor di Supabase." : "Tidak ada siswa yang cocok. Coba kata kunci atau kelas lain.");
+        tampilkanPesan(semuaSiswa.length === 0 ? "Belum ada data siswa. Tambahkan data dengan tombol Tambah Siswa." : "Tidak ada siswa yang cocok. Coba kata kunci atau kelas lain.");
         return;
     }
 
@@ -225,8 +354,97 @@ function buatKartu(s) {
     if (TAMPILKAN.alamat) tambahBaris(rincian, "Alamat", s.alamat);
 
     isi.appendChild(rincian);
+
+    // Tombol Aksi (Edit & Hapus)
+    const aksi = el("div", "aksi-kartu");
+    
+    const btnEdit = el("button", "btn btn-edit", "Edit");
+    btnEdit.onclick = () => bukaModalEdit(s);
+    
+    const btnHapus = el("button", "btn btn-hapus", "Hapus");
+    btnHapus.onclick = () => hapusSiswa(s.nis, s.nama);
+
+    aksi.appendChild(btnEdit);
+    aksi.appendChild(btnHapus);
+    isi.appendChild(aksi);
+
     kartu.appendChild(isi);
     return kartu;
+}
+
+// LANGKAH 5: CREATE & UPDATE (TAMBAH / EDIT DATA)
+formSiswa.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const editNisLama = document.getElementById("editNisLama").value;
+    const payload = {
+        nis: document.getElementById("inputNis").value.trim(),
+        nama: document.getElementById("inputNama").value.trim(),
+        kelas: document.getElementById("inputKelas").value.trim(),
+        jenis_kelamin: document.getElementById("inputGender").value,
+        tanggal_lahir: document.getElementById("inputTgl").value || null,
+        alamat: document.getElementById("inputAlamat").value.trim() || null,
+        foto_url: document.getElementById("inputFoto").value.trim() || null
+    };
+
+    let result;
+    if (editNisLama) {
+        // UPDATE DATA
+        result = await db.from("siswa").update(payload).eq("nis", editNisLama);
+    } else {
+        // CREATE DATA
+        result = await db.from("siswa").insert([payload]);
+    }
+
+    if (result.error) {
+        alert("Gagal menyimpan data: " + result.error.message);
+        console.error(result.error);
+    } else {
+        tutupModal();
+        muatData();
+    }
+});
+
+// LANGKAH 6: DELETE (HAPUS DATA)
+async function hapusSiswa(nis, nama) {
+    if (confirm(`Apakah Anda yakin ingin menghapus data siswa: ${nama} (NIS: ${nis})?`)) {
+        const { error } = await db.from("siswa").delete().eq("nis", nis);
+        if (error) {
+            alert("Gagal menghapus data: " + error.message);
+            console.error(error);
+        } else {
+            muatData();
+        }
+    }
+}
+
+// FUNGSI MODAL
+function bukaModalTambah() {
+    formSiswa.reset();
+    document.getElementById("editNisLama").value = "";
+    document.getElementById("modalJudul").textContent = "Tambah Siswa Baru";
+    document.getElementById("inputNis").disabled = false;
+    modalForm.classList.add("aktif");
+}
+
+function bukaModalEdit(s) {
+    formSiswa.reset();
+    document.getElementById("editNisLama").value = s.nis;
+    document.getElementById("modalJudul").textContent = "Edit Data Siswa";
+    
+    document.getElementById("inputNis").value = s.nis;
+    document.getElementById("inputNama").value = s.nama || "";
+    document.getElementById("inputKelas").value = s.kelas || "";
+    document.getElementById("inputGender").value = s.jenis_kelamin || "Laki-laki";
+    document.getElementById("inputTgl").value = s.tanggal_lahir || "";
+    document.getElementById("inputAlamat").value = s.alamat || "";
+    document.getElementById("inputFoto").value = s.foto_url || "";
+
+    modalForm.classList.add("aktif");
+}
+
+function tutupModal() {
+    modalForm.classList.remove("aktif");
 }
 
 // FUNGSI BANTU
@@ -246,6 +464,7 @@ function tambahBaris(dl, label, nilai) {
 }
 
 function inisial(nama) {
+    if (!nama) return "";
     return nama.split(" ").filter(Boolean).slice(0, 2).map((k) => k[0].toUpperCase()).join("");
 }
 
@@ -267,18 +486,22 @@ function tampilkanPesan(teks, galat) {
 }
 
 function isiPilihanKelas() {
+    const valLama = elKelas.value;
+    elKelas.innerHTML = '<option value="">Semua kelas</option>';
     const daftarKelas = [...new Set(semuaSiswa.map((s) => s.kelas).filter(Boolean))].sort();
     daftarKelas.forEach((k) => {
         const opsi = el("option", "", k);
         opsi.value = k;
         elKelas.appendChild(opsi);
     });
+    elKelas.value = valLama;
 }
 
 elCari.addEventListener("input", tampilkanSiswa);
 elKelas.addEventListener("change", tampilkanSiswa);
 
+// Inisialisasi awal
 muatData();
 </script>
 </body>
-  </html>
+</html>
