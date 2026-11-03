@@ -193,14 +193,16 @@ header p { margin: 0; color: var(--teks-redup); }
             <h1>Teknik Jaringan Komputer</h1>
             <p>Cari berdasarkan role.</p>
         </div>
-        <button class="btn btn-primary" onclick="bukaModalTambah()">+ Tambah Siswa</button>
-        <button class="btn btn-primary" onclick="bukaModalTambah()">+ Tambah Guru</button>
+        <button class="btn btn-primary" onclick="bukaModalTambah()">+ Tambah Siswa/Guru</button>
     </header>
 
     <div class="kontrol">
         <input id="cari" type="search" placeholder="Cari NIS atau Nama..." aria-label="Cari siswa">
         <select id="filterKelas" aria-label="Filter kelas">
-            <option value="">Semua kelas</option>
+            <option value="">Semua Guru&Siswa</option>
+            <option value="">Semua Kelas</option>
+            <option value="">Semua Mapel</option>
+            
         </select>
     </div>
     <p id="jumlah" class="jumlah" aria-live="polite"></p>
