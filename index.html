@@ -625,7 +625,7 @@ formGuru.addEventListener("submit", async (e) => {
     const payload = {
         nip: document.getElementById("inputNip").value.trim(),
         nama: document.getElementById("inputNamaGuru").value.trim(),
-        jeniskelamin: document.getElementById("inputJenis Kelamin").value.trim(),
+        jeniskelamin: document.getElementById("inputJenis Kelamin").value. = s.jenis_kelamin || "Laki-laki";trim(),
         mapel: document.getElementById("inputMapel").value.trim(),
         foto_url: document.getElementById("inputFotoGuru").value.trim() || null
     };
