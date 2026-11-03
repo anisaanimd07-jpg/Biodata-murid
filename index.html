@@ -193,10 +193,67 @@ header p { margin: 0; color: var(--teks-redup); }
             <h1>Teknik Jaringan Komputer</h1>
             <p>Cari berdasarkan role.</p>
         </div>
-        <button class="btn btn-primary" onclick="bukaModalTambah()">+ Tambah Siswa</butto>
+        <button class="btn btn-primary" onclick="bukaModalTambah()">+ Tambah Siswa</button>
+        <button class="btn btn-primary" onclick="bukaModalTambah()">+ Tambah Guru</button>
     </header>
 
     <div class="kontrol">
+        <input id="cari" type="search" placeholder="Cari NIS atau Nama..." aria-label="Cari siswa">
+        <select id="filterKelas" aria-label="Filter kelas" aria label="Filter kelas">
+        <select id="filterKelas" aria-label="Filter Guru" aria label="Filter Guru">
+            <option value="">Semua kelas</option>
+            <option value="">Semua Guru/Siswa</option>
+        </select>
+    </div>
+    <p id="jumlah" class="jumlah" aria-live="polite"></p>
+    <main id="daftar" class="daftar"></main>
+</div>
+
+<!-- Modal Form Tambah / Edit -->
+<div id="modalForm" class="modal-overlay">
+    <div class="modal">
+        <h2 id="modalJudul">Tambah Siswa</h2>
+        <form id="formSiswa">
+            <!-- Hidden field untuk mode edit -->
+            <input type="hidden" id="editNisLama">
+            
+            <div class="form-grup">
+                <label for="inputNis">NIS</label>
+                <input type="text" id="inputNis" required>
+            </div>
+            <div class="form-grup">
+                <label for="inputNama">Nama Lengkap</label>
+                <input type="text" id="inputNama" required>
+            </div>
+            <div class="form-grup">
+                <label for="inputKelas">Kelas</label>
+                <input type="text" id="inputKelas" placeholder="contoh: XII TJKT 1" required>
+            </div>
+            <div class="form-grup">
+                <label for="inputGender">Jenis Kelamin</label>
+                <select id="inputGender">
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                </select>
+            </div>
+            <div class="form-grup">
+                <label for="inputTgl">Tanggal Lahir</label>
+                <input type="date" id="inputTgl">
+            </div>
+            <div class="form-grup">
+                <label for="inputAlamat">Alamat</label>
+                <textarea id="inputAlamat" rows="2"></textarea>
+            </div>
+            <div class="form-grup">
+                <label for="inputFoto">URL Foto (Opsional)</label>
+                <input type="url" id="inputFoto" placeholder="https://...">
+            </div>
+
+            <div class="modal-aksi">
+                <button type="button" class="btn btn-batal" onclick="tutupModal()">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+
+                <div class="kontrol">
         <input id="cari" type="search" placeholder="Cari NIS atau Nama..." aria-label="Cari siswa">
         <select id="filterKelas" aria-label="Filter kelas">
             <option value="">Semua kelas</option>
@@ -250,7 +307,6 @@ header p { margin: 0; color: var(--teks-redup); }
             <div class="modal-aksi">
                 <button type="button" class="btn btn-batal" onclick="tutupModal()">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
-                <button class="btn btn-primary" onclick="bukaModalTambah()">+ Tambah Guru</button>
             </div>
         </form>
     </div>
