@@ -194,6 +194,7 @@ header p { margin: 0; color: var(--teks-redup); }
             <p>Cari berdasarkan role.</p>
         </div>
         <button class="btn btn-primary" onclick="bukaModalTambah()">+ Tambah Siswa</button>
+        <select id="filterKelas" aria-label="Filter Guru" aria label="Filter Guru">
     </header>
 
     <div class="kontrol">
@@ -263,17 +264,16 @@ header p { margin: 0; color: var(--teks-redup); }
     <main id="daftar" class="daftar"></main>
 </div>
             
-<select id="filterKelas" aria-label="Filter Guru" aria label="Filter Guru">
 <!-- Modal Form Tambah / Edit -->
 <div id="modalForm" class="modal-overlay">
     <div class="modal">
-        <h2 id="modalJudul">Tambah Siswa</h2>
-        <form id="formSiswa">
+        <h2 id="modalJudul">Tambah Guru</h2>
+        <form id="formGuru">
             <!-- Hidden field untuk mode edit -->
-            <input type="hidden" id="editNisLama">
+            <input type="hidden" id="editNipLama">
             
             <div class="form-grup">
-                <label for="inputNis">NIS</label>
+                <label for="inputNis">NIP</label>
                 <input type="text" id="inputNis" required>
             </div>
             <div class="form-grup">
@@ -281,7 +281,7 @@ header p { margin: 0; color: var(--teks-redup); }
                 <input type="text" id="inputNama" required>
             </div>
             <div class="form-grup">
-                <label for="inputKelas">Kelas</label>
+                <label for="inputKelas">Jurusan</label>
                 <input type="text" id="inputKelas" placeholder="contoh: XII TJKT 1" required>
             </div>
             <div class="form-grup">
