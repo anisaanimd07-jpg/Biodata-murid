@@ -316,6 +316,13 @@ header p { margin: 0; color: var(--teks-redup); }
                 <input type="text" id="inputNamaGuru" placeholder="contoh: Budi Santoso" required>
             </div>
             <div class="form-grup">
+                <label for="inputGenderGuru">Jenis Kelamin</label>
+                <select id="inputGenderGuru">
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                </select>
+            </div>
+            <div class="form-grup">
                 <label for="inputMapel">Mata Pelajaran (Mapel)</label>
                 <input type="text" id="inputMapel" placeholder="contoh: Administrasi Server" required>
             </div>
@@ -532,14 +539,15 @@ function tutupModalSiswa() { modalSiswa.classList.remove("aktif"); }
 async function muatDataGuru() {
     elDaftarGuru.replaceChildren(buatPesanElemen("Memuat data guru..."));
     
+    // Tambahkan jenis_kelamin di select()
     const { data, error } = await db
-        .from("guru")
-        .select("nip, nama, mapel, foto_url")
+        .from("Data-Guru")
+        .select("nip, nama, jenis_kelamin, mapel, foto_url")
         .order("nama");
 
     if (error) {
         console.error(error);
-        elDaftarGuru.replaceChildren(buatPesanElemen("Gagal memuat data guru. Pastikan tabel 'guru' sudah dibuat di Supabase.", true));
+        elDaftarGuru.replaceChildren(buatPesanElemen("Gagal memuat data guru. Periksa koneksi/tabel Supabase.", true));
         return;
     }
 
@@ -547,7 +555,6 @@ async function muatDataGuru() {
     isiPilihanMapel();
     tampilkanGuru();
 }
-
 function tampilkanGuru() {
     const kataKunci = elCariGuru.value.trim().toLowerCase();
     const mapelDipilih = elFilterMapel.value;
@@ -596,6 +603,8 @@ function buatKartuGuru(g) {
 
     const rincian = el("dl", "rincian");
     tambahBarisRincian(rincian, "Mata Pelajaran", g.mapel);
+    // TAMBAHKAN BARIS INI:
+    if (g.jenis_kelamin) tambahBarisRincian(rincian, "Jenis Kelamin", g.jenis_kelamin);
 
     isi.appendChild(rincian);
 
@@ -611,20 +620,20 @@ function buatKartuGuru(g) {
     kartu.appendChild(isi);
     return kartu;
 }
-
 formGuru.addEventListener("submit", async (e) => {
     e.preventDefault();
     const editNipLama = document.getElementById("editNipLama").value;
     const payload = {
         nip: document.getElementById("inputNip").value.trim(),
         nama: document.getElementById("inputNamaGuru").value.trim(),
+        jenis_kelamin: document.getElementById("inputGenderGuru").value, // TAMBAHKAN BARIS INI
         mapel: document.getElementById("inputMapel").value.trim(),
         foto_url: document.getElementById("inputFotoGuru").value.trim() || null
     };
 
     let result = editNipLama ? 
-        await db.from("guru").update(payload).eq("nip", editNipLama) : 
-        await db.from("guru").insert([payload]);
+        await db.from("Data-Guru").update(payload).eq("nip", editNipLama) : 
+        await db.from("Data-Guru").insert([payload]);
 
     if (result.error) {
         alert("Gagal menyimpan data guru: " + result.error.message);
@@ -657,11 +666,11 @@ function bukaModalEditGuru(g) {
     document.getElementById("inputNip").value = g.nip;
     document.getElementById("inputNip").disabled = true;
     document.getElementById("inputNamaGuru").value = g.nama || "";
+    document.getElementById("inputGenderGuru").value = g.jenis_kelamin || "Laki-laki"; // TAMBAHKAN BARIS INI
     document.getElementById("inputMapel").value = g.mapel || "";
     document.getElementById("inputFotoGuru").value = g.foto_url || "";
     modalGuru.classList.add("aktif");
 }
-
 function tutupModalGuru() { modalGuru.classList.remove("aktif"); }
 
 
